@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  height: 500px;
+  width: 800px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  background: url("../assets/fondo1.jpeg") no-repeat;
+  background-size: cover;
+  background-position: 100%;
+}
+/*.packet {
+  width: 420px;
+  background: transparent;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 30px 40px;
+}*/
+.bg-pinky {
+  --tw-bg-opacity: 1;
+  background-color: #f69bcd;
+  background: transparent;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 30px 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.bg-menta {
+  background-color: #3ab19b;
+  width: 30%;
+  height: 45%;
+  border: none;
+  outline: none;
+  border-radius: 60px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 10px;
+  color: white;
+}
+
+.bg-mb {
+  background-color: #3ab19b;
+  width: 60%;
+  height: 45%;
+  border-radius: 60px;
+  font-size: 12px;
+  padding: 10px;
+  color: white;
+}
+h1 {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 40px;
+  text-align: center;
+  color: #46ae9e;
+}
+
+h2 {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 20px;
+  text-align: center;
+  color: black;
+}
+
+.font {
+  font-size: 12px;
+}
+
+.font-h {
+  font-size: 30px;
+}
+
+/*Responsive*/
