@@ -8,14 +8,12 @@
   box-sizing: border-box;
 }
 
-.container {
+.background-image {
   display: flex;
-  height: 500px;
-  width: 800px;
-  margin: auto;
-  margin-top: 50px;
+  background: url("./assets/fondo1.jpeg") no-repeat;
+  background-size: cover;
+  background-position: center center;
 }
-
 .body {
   display: flex;
   background: url("./assets/fondo1.jpeg") no-repeat;
@@ -24,13 +22,21 @@
   min-height: 100vh;
 }
 
+.box-size {
+  display: flex;
+  height: 500px;
+  width: 800px;
+  margin: auto;
+  margin-top: 50px;
+}
+
 .bg-pinky {
   --tw-bg-opacity: 1;
   background-color: #f69bcd;
   background: transparent;
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.1);
-  padding: 30px 40px;
+  padding: 40px 50px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 .bg-menta {
@@ -78,4 +84,11 @@ h2 {
 
 .font-h {
   font-size: 30px;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 340px) {
+  body {
+    background-size: contain;
+  }
 }
