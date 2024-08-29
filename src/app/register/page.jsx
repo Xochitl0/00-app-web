@@ -5,9 +5,11 @@ import { use, useState } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { IoLogoGoogleplus } from "react-icons/io";
 import { FaLinkedin } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +18,10 @@ const Register = () => {
     const userData = { name, email, password };
     localStorage.setItem("userData", JSON.stringify(userData));
     alert("Registro exitoso");
+  };
+
+  const handleClick = () => {
+    router.push("/login");
   };
 
   return (
@@ -32,6 +38,7 @@ const Register = () => {
             </p>
             <div className="text-center">
               <button
+                onClick={handleClick}
                 type="submit"
                 className="bg-mb button-color mt-5 border-2"
               >

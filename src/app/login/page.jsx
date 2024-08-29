@@ -31,6 +31,10 @@ const Login = () => {
     }
   };
 
+  const handleClick = () => {
+    router.push("/register");
+  };
+
   return (
     <>
       <div className="flex bg-[url('./assets/fondo1.jpeg')]  min-h-screen bg-cover bg-no-repeat">
@@ -99,6 +103,7 @@ const Login = () => {
             </p>
             <div className="text-center">
               <button
+                onClick={handleClick}
                 type="submit"
                 className="bg-mb button-color mt-5 border-2"
               >
