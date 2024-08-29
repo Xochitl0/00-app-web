@@ -6,10 +6,34 @@ import { FaFacebookF } from "react-icons/fa";
 import { IoLogoGoogleplus } from "react-icons/io";
 import { FaLinkedin } from "react-icons/fa";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const router = useRouter();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+
+    if (
+      storedUserData &&
+      storedUserData.email === email &&
+      storedUserData.password === password
+    ) {
+      alert("Inicio de sesion");
+      router.push("/dashboard");
+    } else {
+      alert("Credenciales incorrectas");
+    }
+  };
+
   return (
     <>
-      <div className="flex bg-[url('./assets/fondo1.jpeg')] bg-cover bg-no-repeat min-h-screen">
+      <div className="flex bg-[url('./assets/fondo1.jpeg')]  min-h-screen bg-cover bg-no-repeat">
         <header />
         <div className="container md:max-w-3xl mt-16 mx-auto px-4 box-size">
           {/* Columna izquierda */}
@@ -31,8 +55,8 @@ const Login = () => {
             <div className="text-center text-gray-400">
               <p className="font-light">or use your email account</p>
             </div>
-            <form action="">
-              <div className="">
+            <form action="" className="container" onSubmit={handleSubmit}>
+              <div className="container">
                 <div className="mb-4 mt-3 text-center">
                   <input
                     type="email"
@@ -40,6 +64,8 @@ const Login = () => {
                     name="email"
                     placeholder="Email"
                     className="mt-1 p-2 w-80 border rounded"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="mb-4 mt-3 text-center">
@@ -49,6 +75,8 @@ const Login = () => {
                     name="password"
                     placeholder="Password"
                     className="mt-1 p-2 w-80 border rounded"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
@@ -56,7 +84,7 @@ const Login = () => {
                 <a href="/">Forgout your password?</a>
               </div>
               <div className="text-center">
-                <button type="submit" className="bg-menta b-signUp mt-5 ">
+                <button type="submit" className="bg-menta button-color mt-5 ">
                   SIGN UP
                 </button>
               </div>
@@ -64,7 +92,7 @@ const Login = () => {
           </div>
 
           {/* Columna derecha */}
-          <div className="w-2/5 bg-pinky rounded-tr-lg rounded-br-lg px-4 ">
+          <div className="w-2/5 bg-pinky rounded-tr-lg rounded-br-lg">
             <h2 className="p-20 font-bold text-white font-h">Hello, Friend!</h2>
             <p className="text-center -mt-10 text-white font">
               Enter your personal detail <br /> and start journey with us

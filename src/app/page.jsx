@@ -1,9 +1,12 @@
 import Link from "next/link";
+import Login from "./login/page";
 
 const Home = () => {
   return (
     <>
-      <Link href="/login">Login</Link>
+      <div className="container">
+        <Login />
+      </div>
     </>
   );
 };

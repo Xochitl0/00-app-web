@@ -1,17 +1,21 @@
 "use client";
 import "../globals.css";
-import { useRef } from "react";
+import { use, useState } from "react";
 
 import { FaFacebookF } from "react-icons/fa";
 import { IoLogoGoogleplus } from "react-icons/io";
 import { FaLinkedin } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Register = () => {
-  const form = useRef(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Me diste click");
+  const handleRegister = () => {
+    const userData = { name, email, password };
+    localStorage.setItem("userData", JSON.stringify(userData));
+    alert("Registro exitoso");
   };
 
   return (
@@ -53,13 +57,8 @@ const Register = () => {
             <div className="text-center text-gray-400">
               <p className="font-light">or use your email for registration</p>
             </div>
-            <form
-              action=""
-              onSubmit={handleSubmit}
-              ref={form}
-              className="container"
-            >
-              <div className=" container">
+            <form action="" className="container" onSubmit={handleRegister}>
+              <div className="container">
                 <div className="mb-4 mt-3 text-center">
                   <input
                     type="name"
@@ -67,6 +66,8 @@ const Register = () => {
                     name="name"
                     placeholder="Name"
                     className="mt-1 p-2 w-80 border rounded"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div className="mb-4 mt-3 text-center">
@@ -76,6 +77,8 @@ const Register = () => {
                     name="email"
                     placeholder="Email"
                     className="mt-1 p-2 w-80 border rounded"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="mb-4 mt-3 text-center">
@@ -85,12 +88,14 @@ const Register = () => {
                     name="password"
                     placeholder="Password"
                     className="mt-1 p-2 w-80 border rounded"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
 
               <div className="text-center">
-                <button type="submit" className="bg-menta button-color mt-5 ">
+                <button type="submit" className="bg-menta button-color mt-5">
                   SIGN UP
                 </button>
               </div>
