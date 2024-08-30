@@ -1,11 +1,16 @@
 "use client";
 import "../globals.css";
-import { use, useState } from "react";
+import * as Yup from "yup";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { FaFacebookF } from "react-icons/fa";
 import { IoLogoGoogleplus } from "react-icons/io";
 import { FaLinkedin } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+
+import { Formik } from "formik";
+import { Box, TextField } from "@mui/material";
 
 const Register = () => {
   const router = useRouter();
@@ -23,6 +28,21 @@ const Register = () => {
   const handleClick = () => {
     router.push("/login");
   };
+
+  const onSubmit = ({ name, email, password }) => {
+    const userData = { name, email, password };
+    localStorage.setItem("userData", JSON.stringify(userData));
+    alert("Registro exitoso");
+  };
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Name requerido"),
+    email: Yup.string().email("Email no válido").required("Email requerido"),
+    password: Yup.string()
+      .trim()
+      .min(6, "Mínimo 6 carácteres")
+      .required("Password requerida"),
+  });
 
   return (
     <>
@@ -64,49 +84,82 @@ const Register = () => {
             <div className="text-center text-gray-400">
               <p className="font-light">or use your email for registration</p>
             </div>
-            <form action="" className="container" onSubmit={handleRegister}>
-              <div className="container">
-                <div className="mb-4 mt-3 text-center">
-                  <input
-                    type="name"
-                    id="name"
-                    name="name"
-                    placeholder="Name"
-                    className="mt-1 p-2 w-80 border rounded"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="mb-4 mt-3 text-center">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                    className="mt-1 p-2 w-80 border rounded"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="mb-4 mt-3 text-center">
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Password"
-                    className="mt-1 p-2 w-80 border rounded"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-              </div>
 
-              <div className="text-center">
-                <button type="submit" className="bg-menta button-color mt-5">
-                  SIGN UP
-                </button>
-              </div>
-            </form>
+            <Formik
+              initialValues={{ name: "", email: "", password: "" }}
+              onSubmit={onSubmit}
+              validationSchema={validationSchema}
+            >
+              {({ values, handleSubmit, handleChange, errors, touched }) => (
+                <Box
+                  component="form"
+                  action=""
+                  className="container"
+                  onSubmit={handleSubmit}
+                >
+                  <div className="container">
+                    <div className="mb-4 mt-3 text-center">
+                      <TextField
+                        type="name"
+                        id="name"
+                        name="name"
+                        placeholder="Name"
+                        className="mt-1 p-2 w-80 border rounded"
+                        fullWidth
+                        sx={{ mb: -3 }}
+                        value={values.name}
+                        onChange={handleChange}
+                        error={errors.name && touched.name}
+                        helperText={errors.name && touched.name && errors.name}
+                      />
+                    </div>
+                    <div className="mb-4 mt-3 text-center">
+                      <TextField
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Email"
+                        className="mt-1 p-2 w-80 border rounded"
+                        fullWidth
+                        sx={{ mb: -3 }}
+                        value={values.email}
+                        onChange={handleChange}
+                        error={errors.email && touched.email}
+                        helperText={
+                          errors.email && touched.email && errors.email
+                        }
+                      />
+                    </div>
+                    <div className="mb-4 mt-3 text-center">
+                      <TextField
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        className="mt-1 p-2 w-80 border rounded"
+                        fullWidth
+                        sx={{ mb: -3 }}
+                        value={values.password}
+                        onChange={handleChange}
+                        error={errors.password && touched.password}
+                        helperText={
+                          errors.password && touched.password && errors.password
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="text-center">
+                    <button
+                      type="submit"
+                      className="bg-menta button-color mt-5"
+                    >
+                      SIGN UP
+                    </button>
+                  </div>
+                </Box>
+              )}
+            </Formik>
           </div>
         </div>
       </div>

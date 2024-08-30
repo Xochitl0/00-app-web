@@ -9,6 +9,11 @@ import { FaLinkedin } from "react-icons/fa";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Formik } from "formik";
+import { Box, TextField } from "@mui/material";
+
+import * as Yup from "yup";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +22,14 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  };
+
+  const handleClick = () => {
+    router.push("/register");
+  };
+
+  const onSubmit = ({ email, password }) => {
+    console.log(email, password);
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
     if (
@@ -31,9 +44,13 @@ const Login = () => {
     }
   };
 
-  const handleClick = () => {
-    router.push("/register");
-  };
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email("Email no válido").required("Email requerido"),
+    password: Yup.string()
+      .trim()
+      .min(6, "Mínimo 6 carácteres")
+      .required("Password requerida"),
+  });
 
   return (
     <>
@@ -59,40 +76,68 @@ const Login = () => {
             <div className="text-center text-gray-400">
               <p className="font-light">or use your email account</p>
             </div>
-            <form action="" className="container" onSubmit={handleSubmit}>
-              <div className="container">
-                <div className="mb-4 mt-3 text-center">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                    className="mt-1 p-2 w-80 border rounded"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="mb-4 mt-3 text-center">
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Password"
-                    className="mt-1 p-2 w-80 border rounded"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="text-center">
-                <a href="/">Forgout your password?</a>
-              </div>
-              <div className="text-center">
-                <button type="submit" className="bg-menta button-color mt-5 ">
-                  SIGN UP
-                </button>
-              </div>
-            </form>
+            <Formik
+              initialValues={{ email: "", password: "" }}
+              onSubmit={onSubmit}
+              validationSchema={validationSchema}
+            >
+              {({ values, handleSubmit, handleChange, errors, touched }) => (
+                <Box
+                  action=""
+                  className="container"
+                  onSubmit={handleSubmit}
+                  component="form"
+                >
+                  <div className="container">
+                    <div className="mb-4 mt-3 text-center">
+                      <TextField
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Email"
+                        className="mt-1 p-2 w-80 border rounded"
+                        fullWidth
+                        sx={{ mb: -3 }}
+                        value={values.email}
+                        onChange={handleChange}
+                        error={errors.email && touched.email}
+                        helperText={
+                          errors.email && touched.email && errors.email
+                        }
+                      />
+                    </div>
+                    <div className="mb-4 mt-3 text-center">
+                      <TextField
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        className="mt-1 p-2 w-80 border rounded"
+                        fullWidth
+                        sx={{ mb: -1 }}
+                        value={values.password}
+                        onChange={handleChange}
+                        error={errors.password && touched.password}
+                        helperText={
+                          errors.password && touched.password && errors.password
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <a href="/">Forgout your password?</a>
+                  </div>
+                  <div className="text-center">
+                    <button
+                      type="submit"
+                      className="bg-menta button-color mt-5 "
+                    >
+                      SIGN IN
+                    </button>
+                  </div>
+                </Box>
+              )}
+            </Formik>
           </div>
 
           {/* Columna derecha */}
@@ -107,7 +152,7 @@ const Login = () => {
                 type="submit"
                 className="bg-mb button-color mt-5 border-2"
               >
-                SING IN
+                SING UP
               </button>
             </div>
           </div>
