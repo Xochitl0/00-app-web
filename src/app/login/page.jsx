@@ -15,19 +15,14 @@ import { Box, TextField } from "@mui/material";
 import * as Yup from "yup";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const router = useRouter();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
+  //Redireccion
   const handleClick = () => {
     router.push("/register");
   };
 
+  //Validaciones credenciales
   const onSubmit = ({ email, password }) => {
     console.log(email, password);
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
@@ -37,12 +32,14 @@ const Login = () => {
       storedUserData.email === email &&
       storedUserData.password === password
     ) {
-      alert("Inicio de sesion");
+      showAlert();
       router.push("/dashboard");
     } else {
-      alert("Credenciales incorrectas");
+      mAlert();
     }
   };
+
+  //Validaciones campos
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Email no válido").required("Email requerido"),
@@ -52,6 +49,36 @@ const Login = () => {
       .required("Password requerida"),
   });
 
+  const Swal = require("sweetalert2");
+
+  const showAlert = () => {
+    Swal.fire({
+      title: "Inicio de  exitoso",
+      showClass: {
+        popup: `
+      animate__animated
+      animate__fadeInUp
+      animate__faster
+    `,
+      },
+      hideClass: {
+        popup: `
+      animate__animated
+      animate__fadeOutDown
+      animate__faster
+    `,
+      },
+    });
+  };
+
+  const mAlert = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Oops..",
+      text: "Credenciales incorrectas",
+    });
+  };
+
   return (
     <>
       <div className="flex bg-[url('./assets/fondo1.jpeg')]  min-h-screen bg-cover bg-no-repeat">
@@ -60,7 +87,7 @@ const Login = () => {
           {/* Columna izquierda */}
           <div className="w-3/5 bg-gray-100 rounded-tl-lg rounded-bl-lg">
             <div>
-              <h1 className="font-bold p-10"> Sign in</h1>
+              <h1 className="font-bold p-5"> Sign in</h1>
               <div className="flex justify-center">
                 <button className="rounded-full border-2 border-solid h-10 w-10 p-2 mt-2">
                   <FaFacebookF />

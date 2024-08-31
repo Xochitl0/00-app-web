@@ -19,11 +19,11 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = () => {
+  /*const handleRegister = () => {
     const userData = { name, email, password };
     localStorage.setItem("userData", JSON.stringify(userData));
     alert("Registro exitoso");
-  };
+  };*/
 
   const handleClick = () => {
     router.push("/login");
@@ -32,7 +32,7 @@ const Register = () => {
   const onSubmit = ({ name, email, password }) => {
     const userData = { name, email, password };
     localStorage.setItem("userData", JSON.stringify(userData));
-    alert("Registro exitoso");
+    showAlert();
   };
 
   const validationSchema = Yup.object().shape({
@@ -43,6 +43,18 @@ const Register = () => {
       .min(6, "Mínimo 6 carácteres")
       .required("Password requerida"),
   });
+
+  const Swal = require("sweetalert2");
+
+  const showAlert = () => {
+    Swal.fire({
+      position: "top-center",
+      icon: "success",
+      title: "Registro exitoso",
+      showConfirmButton: false,
+      timer: 2500,
+    });
+  };
 
   return (
     <>
@@ -68,7 +80,7 @@ const Register = () => {
           </div>
           {/* Columna izquierda */}
           <div className="w-3/5 bg-gray-100  px-4 rounded-tr-lg rounded-br-lg ">
-            <h1 className="font-bold p-5"> Create Account</h1>
+            <h1 className="font-bold p-2"> Create Account</h1>
             <div className="flex justify-center">
               <button className="rounded-full border-2 border-solid h-10 w-10 p-2 mt-2">
                 <FaFacebookF />
