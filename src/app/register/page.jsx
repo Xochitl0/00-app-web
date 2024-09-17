@@ -30,7 +30,9 @@ const Register = () => {
   };
 
   const onSubmit = ({ name, email, password }) => {
-    const userData = { name, email, password };
+    let userData = JSON.parse(localStorage.getItem("userData")) || [];
+    const newUserData = { name, email, password };
+    userData.push(newUserData);
     localStorage.setItem("userData", JSON.stringify(userData));
     showAlert();
   };

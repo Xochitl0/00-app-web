@@ -6,7 +6,6 @@ import { FaFacebookF } from "react-icons/fa";
 import { IoLogoGoogleplus } from "react-icons/io";
 import { FaLinkedin } from "react-icons/fa";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Formik } from "formik";
@@ -25,13 +24,13 @@ const Login = () => {
   //Validaciones credenciales
   const onSubmit = ({ email, password }) => {
     console.log(email, password);
-    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+    const storedUserData = JSON.parse(localStorage.getItem("userData")) || [];
 
-    if (
-      storedUserData &&
-      storedUserData.email === email &&
-      storedUserData.password === password
-    ) {
+    const user = storedUserData.find(
+      (user) => user.email === email && user.password === password
+    );
+
+    if (user) {
       showAlert();
       router.push("/dashboard");
     } else {
