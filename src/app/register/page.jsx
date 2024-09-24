@@ -19,26 +19,36 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  /*const handleRegister = () => {
-    const userData = { name, email, password };
-    localStorage.setItem("userData", JSON.stringify(userData));
-    alert("Registro exitoso");
-  };*/
-
   const handleClick = () => {
     router.push("/login");
   };
 
-  const onSubmit = ({ name, email, password }) => {
+  const onSubmit = ({ name, user, email, password }, { resetForm }) => {
+    //Recuperar los datos existentes
     let userData = JSON.parse(localStorage.getItem("userData")) || [];
-    const newUserData = { name, email, password };
+
+    const userExists = userData.some((user) => user.email === email);
+    if (userExists) {
+      showAlert1();
+      resetForm();
+      return;
+    }
+
+    //Crear el nuevo registro
+    const newUserData = { name, user, email, password };
+    //Agregar el nuevo registro al array
     userData.push(newUserData);
+    //Guardar el array actualizado en el localStorage
     localStorage.setItem("userData", JSON.stringify(userData));
     showAlert();
+
+    // Limpiar los campos del formulario
+    resetForm();
   };
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name requerido"),
+    user: Yup.string().required("User requerido"),
     email: Yup.string().email("Email no válido").required("Email requerido"),
     password: Yup.string()
       .trim()
@@ -56,6 +66,10 @@ const Register = () => {
       showConfirmButton: false,
       timer: 2500,
     });
+  };
+
+  const showAlert1 = () => {
+    Swal.fire("El usuario con este email ya está registrado.");
   };
 
   return (
@@ -100,7 +114,7 @@ const Register = () => {
             </div>
 
             <Formik
-              initialValues={{ name: "", email: "", password: "" }}
+              initialValues={{ name: "", user: "", email: "", password: "" }}
               onSubmit={onSubmit}
               validationSchema={validationSchema}
             >
@@ -112,13 +126,13 @@ const Register = () => {
                   onSubmit={handleSubmit}
                 >
                   <div className="container">
-                    <div className="mb-4 mt-3 text-center">
+                    <div className="mb-2 mt-1 text-center">
                       <TextField
                         type="name"
                         id="name"
                         name="name"
                         placeholder="Name"
-                        className="mt-1 p-2 w-80 border rounded"
+                        className="mt-1 p-2 w-80  border rounded"
                         fullWidth
                         sx={{ mb: -3 }}
                         value={values.name}
@@ -127,7 +141,22 @@ const Register = () => {
                         helperText={errors.name && touched.name && errors.name}
                       />
                     </div>
-                    <div className="mb-4 mt-3 text-center">
+                    <div className="mb-2 mt-1 text-center">
+                      <TextField
+                        type="user"
+                        id="user"
+                        name="user"
+                        placeholder="User"
+                        className="mt-1 p-2 w-80 border rounded"
+                        fullWidth
+                        sx={{ mb: -3 }}
+                        value={values.user}
+                        onChange={handleChange}
+                        error={errors.user && touched.user}
+                        helperText={errors.user && touched.user && errors.user}
+                      />
+                    </div>
+                    <div className="mb-2 mt-1 text-center">
                       <TextField
                         type="email"
                         id="email"
@@ -144,7 +173,7 @@ const Register = () => {
                         }
                       />
                     </div>
-                    <div className="mb-4 mt-3 text-center">
+                    <div className="mb-2 mt-1 text-center">
                       <TextField
                         type="password"
                         id="password"

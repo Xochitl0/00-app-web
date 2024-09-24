@@ -21,11 +21,11 @@ const Login = () => {
     router.push("/register");
   };
 
-  //Validaciones credenciales
-  const onSubmit = ({ email, password }) => {
+  const onSubmit = ({ email, password }, { resetForm }) => {
     console.log(email, password);
     const storedUserData = JSON.parse(localStorage.getItem("userData")) || [];
 
+    //Validaciones credenciales
     const user = storedUserData.find(
       (user) => user.email === email && user.password === password
     );
@@ -36,10 +36,12 @@ const Login = () => {
     } else {
       mAlert();
     }
+
+    // Limpiar los campos del formulario
+    resetForm();
   };
 
   //Validaciones campos
-
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Email no válido").required("Email requerido"),
     password: Yup.string()
