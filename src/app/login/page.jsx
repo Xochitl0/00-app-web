@@ -34,6 +34,7 @@ const Login = () => {
     );
 
     if (usuario) {
+      localStorage.setItem("usuarioConectado", JSON.stringify(usuario));
       showAlert();
       router.push("/dashboard");
     } else {
