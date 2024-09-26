@@ -27,9 +27,16 @@ const Register = () => {
     //Recuperar los datos existentes
     let userData = JSON.parse(localStorage.getItem("userData")) || [];
 
-    const userExists = userData.some((user) => user.email === email);
-    if (userExists) {
+    const emailExists = userData.some((usuario) => usuario.email === email);
+    if (emailExists) {
       showAlert1();
+      resetForm();
+      return;
+    }
+
+    const userExists = userData.some((usuario) => usuario.user === user);
+    if (userExists) {
+      showAlert2();
       resetForm();
       return;
     }
@@ -49,7 +56,9 @@ const Register = () => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name requerido"),
     user: Yup.string().required("User requerido"),
-    email: Yup.string().email("Email no válido").required("Email requerido"),
+    email: Yup.string()
+      .email("Por favor, introduzca un email válido")
+      .required("❗Introduce una dirección de correo electrónico"),
     password: Yup.string()
       .trim()
       .min(6, "Mínimo 6 carácteres")
@@ -69,16 +78,20 @@ const Register = () => {
   };
 
   const showAlert1 = () => {
-    Swal.fire("El usuario con este email ya está registrado.");
+    Swal.fire("El email ya está registrado, intenta nuevamente.");
+  };
+
+  const showAlert2 = () => {
+    Swal.fire("El usuario ya está registrado.");
   };
 
   return (
     <>
       <div className="flex bg-[url('./assets/fondo1.jpeg')] bg-cover bg-no-repeat min-h-screen">
-        <header />
-        <div className="container md:max-w-3xl mt-16 mx-auto px-4 box-size">
+        <header className=" bg-green-400 " />
+        <div className="mt-16 mx-auto px-4 box-size">
           {/* Columna iquierda */}
-          <div className="w-2/5 bg-pinky rounded-tl-lg rounded-bl-lg">
+          <div className="containerw-2/5 bg-pinky rounded-tl-lg rounded-bl-lg">
             <h2 className="p-10 font-bold text-white font-h">Welcome Back!</h2>
             <p className="text-center -mt-10 text-white font">
               To keep connected with us please <br /> login with your personal
@@ -190,15 +203,14 @@ const Register = () => {
                         }
                       />
                     </div>
-                  </div>
-
-                  <div className="text-center">
-                    <button
-                      type="submit"
-                      className="bg-menta button-color mt-5"
-                    >
-                      SIGN UP
-                    </button>
+                    <div className="text-center">
+                      <button
+                        type="submit"
+                        className="bg-menta button-color mt-5"
+                      >
+                        SIGN UP
+                      </button>
+                    </div>
                   </div>
                 </Box>
               )}

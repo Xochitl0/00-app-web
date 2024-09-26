@@ -16,21 +16,24 @@ import * as Yup from "yup";
 const Login = () => {
   const router = useRouter();
 
-  //Redireccion
+  // Redireccion
   const handleClick = () => {
     router.push("/register");
   };
 
-  const onSubmit = ({ email, password }, { resetForm }) => {
-    console.log(email, password);
+  const onSubmit = ({ emailOrUsername, password }, { resetForm }) => {
+    console.log(emailOrUsername, password);
     const storedUserData = JSON.parse(localStorage.getItem("userData")) || [];
 
-    //Validaciones credenciales
-    const user = storedUserData.find(
-      (user) => user.email === email && user.password === password
+    // Validaciones credenciales
+    const usuario = storedUserData.find(
+      (usuario) =>
+        (usuario.user === emailOrUsername ||
+          usuario.email === emailOrUsername) &&
+        usuario.password === password
     );
 
-    if (user) {
+    if (usuario) {
       showAlert();
       router.push("/dashboard");
     } else {
@@ -41,12 +44,14 @@ const Login = () => {
     resetForm();
   };
 
-  //Validaciones campos
+  // Validaciones campos
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Email no válido").required("Email requerido"),
+    emailOrUsername: Yup.string().required(
+      "Email o nombre de usuario requerido"
+    ),
     password: Yup.string()
       .trim()
-      .min(6, "Mínimo 6 carácteres")
+      .min(6, "Mínimo 6 caracteres")
       .required("Password requerida"),
   });
 
@@ -54,7 +59,7 @@ const Login = () => {
 
   const showAlert = () => {
     Swal.fire({
-      title: "Inicio de  exitoso",
+      title: "Inicio de sesión exitoso",
       showClass: {
         popup: `
       animate__animated
@@ -75,7 +80,7 @@ const Login = () => {
   const mAlert = () => {
     Swal.fire({
       icon: "error",
-      title: "Oops..",
+      title: "Oops...",
       text: "Credenciales incorrectas",
     });
   };
@@ -105,7 +110,7 @@ const Login = () => {
               <p className="font-light">or use your email account</p>
             </div>
             <Formik
-              initialValues={{ email: "", password: "" }}
+              initialValues={{ emailOrUsername: "", password: "" }}
               onSubmit={onSubmit}
               validationSchema={validationSchema}
             >
@@ -119,18 +124,22 @@ const Login = () => {
                   <div className="container">
                     <div className="mb-4 mt-3 text-center">
                       <TextField
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Email"
+                        type="text"
+                        id="emailOrUsername"
+                        name="emailOrUsername"
+                        placeholder="Email o nombre de usuario"
                         className="mt-1 p-2 w-80 border rounded"
                         fullWidth
                         sx={{ mb: -3 }}
-                        value={values.email}
+                        value={values.emailOrUsername}
                         onChange={handleChange}
-                        error={errors.email && touched.email}
+                        error={
+                          errors.emailOrUsername && touched.emailOrUsername
+                        }
                         helperText={
-                          errors.email && touched.email && errors.email
+                          errors.emailOrUsername && touched.emailOrUsername
+                            ? errors.emailOrUsername
+                            : ""
                         }
                       />
                     </div>
@@ -142,12 +151,14 @@ const Login = () => {
                         placeholder="Password"
                         className="mt-1 p-2 w-80 border rounded"
                         fullWidth
-                        sx={{ mb: -1 }}
+                        sx={{ mb: -3 }}
                         value={values.password}
                         onChange={handleChange}
                         error={errors.password && touched.password}
                         helperText={
-                          errors.password && touched.password && errors.password
+                          errors.password && touched.password
+                            ? errors.password
+                            : ""
                         }
                       />
                     </div>
